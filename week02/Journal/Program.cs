@@ -1,9 +1,97 @@
 using System;
 
+
 class Program
 {
+    
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello World! This is the Journal Project.");
+        // Create one Journal and one PromptGenerator to use all program long.
+        Journal journal = new Journal();
+        PromptGenerator promptGenerator = new PromptGenerator();
+
+        Console.WriteLine("Welcome to the Journal Program!");
+
+        
+        string choice = "";
+
+        
+        while (choice != "5")
+        {
+           
+            Console.WriteLine("Please select one of the following choices:");
+            Console.WriteLine("1. Write");
+            Console.WriteLine("2. Display");
+            Console.WriteLine("3. Load");
+            Console.WriteLine("4. Save");
+            Console.WriteLine("5. Quit");
+
+            Console.Write("What would you like to do? ");   // Write = no new line after it
+            choice = Console.ReadLine();                    // wait for the user to type
+            
+            if (choice == "1")
+            {
+                string prompt = promptGenerator.GetRandomPrompt();
+                Console.WriteLine(prompt);
+                Console.Write("> ");
+                string response = Console.ReadLine();
+
+                string date = DateTime.Now.ToShortDateString();
+
+                Entry entry = new Entry(date, prompt, response);
+                journal.AddEntry(entry);
+                Console.WriteLine();
+            }
+            else if (choice == "2")
+            {
+                journal.DisplayAll();
+            }
+            else if (choice == "3")
+            {
+                Console.Write("What is the filename? ");
+                string filename = Console.ReadLine();
+
+                try
+                {
+                    journal.LoadFromFile(filename);
+                    Console.WriteLine("Journal loaded.");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Sorry, that file could not be loaded.");
+                }
+                Console.WriteLine();
+            }
+            else if (choice == "4")
+            {
+                Console.Write("What is the filename? ");
+                string filename = Console.ReadLine();
+
+                try
+                {
+                    journal.SaveToFile(filename);
+                    Console.WriteLine("Journal saved.");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Sorry, that file could not be saved.");
+                }
+                Console.WriteLine();
+            }
+            else if (choice != "5")
+            {
+                Console.WriteLine("Goodbye!");
+            }
+            else
+            {
+                Console.WriteLine("Please enter a number from 1 to 5.");
+                Console.WriteLine();
+            }
+            
+              
+        }
+
+        
     }
+
 }
